@@ -7,7 +7,7 @@ def total_cash(array)
 end
 
 def add_or_remove_cash(array, amount)
-    array[:admin][:total_cash] += amount
+  array[:admin][:total_cash] += amount
 end
 
 def pets_sold(array)
@@ -23,11 +23,7 @@ def pets_sold(array)
 end
 
 def stock_count(array)
-  total_stock = 0
-  for stock in array[:pets]
-    total_stock += 1
-  end
-  return total_stock
+  return array[:pets].count
 end
 
 def pets_by_breed(array, breed)
@@ -78,9 +74,14 @@ def add_pet_to_customer(customer, pet)
 end
 
 def customer_can_afford_pet(customer, pet)
-  if customer[:cash] >= pet[:price]
-    return true
-  else
-    return false
+  return customer[:cash] >= pet[:price]
+end
+
+def sell_pet_to_customer(petShop, pet, customer)
+  if pet != nil && customer_can_afford_pet(customer, pet)
+    remove_customer_cash(customer, pet[:price])
+    add_pet_to_customer(customer, pet)
+    add_or_remove_cash(petShop, pet[:price])
+    increase_pets_sold(petShop, 1)
   end
 end
